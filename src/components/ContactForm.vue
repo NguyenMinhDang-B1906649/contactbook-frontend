@@ -52,7 +52,8 @@
       </label>
     </div>
     <div class="form-group">
-      <button class="btn btn-primary">Lưu</button>
+      <button v-if="isAdd" class="btn btn-primary">Thêm</button>
+      <button v-else class="btn btn-primary">Lưu</button>
       <button
         v-if="contactLocal._id"
         type="button"
@@ -73,8 +74,11 @@ export default {
     Field,
     ErrorMessage,
   },
-  emits: ["submit:contact", "delete:contact"],
+  emits: ["submit:contact", "delete:contact", "add:contact"],
   props: {
+    isAdd: {
+      type: Boolean,
+    },
     contact: { type: Object, required: true },
   },
   data() {
@@ -105,6 +109,9 @@ export default {
   },
   methods: {
     submitContact() {
+      if (this.isAdd) {
+        this.$emit("add:contact", this.contactLocal);
+      }
       this.$emit("submit:contact", this.contactLocal);
     },
     deleteContact() {
